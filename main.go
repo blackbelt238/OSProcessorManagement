@@ -15,6 +15,11 @@ type SchedulingProcedure interface {
 	Name() string
 }
 
+type schedulingProcedure struct {
+	fn   func(que [][2]int) int
+	name string
+}
+
 // initProc initializes the slice representing the processors
 func initProc() {
 	proc = make([]*Processor, k)
