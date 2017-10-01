@@ -14,6 +14,14 @@ func initProc() {
 	proc = make([][2]int, k)
 }
 
+// takes in 2 numbers and returns the maximum
+func max(a, b int) int {
+	if a < b {
+		return b
+	}
+	return a
+}
+
 // processscheduler simulates a multi-core, non-preemptive process scheduler
 func main() {
 	e1 := [][2]int{{0, 3}, {1, 2}, {2, 1}}
