@@ -1,19 +1,10 @@
 package main
 
-// define
+// RoundRobin is a scheduling procedure using the round-robin method of scheduling
 type RoundRobin struct{}
 
-// implements SchedulingProcedure.Schedule
+// Schedule implements SchedulingProcedure.Schedule
 func (rr *RoundRobin) Schedule(que []*Job) int {
-	return circular(que)
-}
-
-// implements SchedulingProcedure.Name
-func (rr *RoundRobin) Name() string {
-	return "Round Robin"
-}
-
-func circular(que []*Job) int {
 	j := 0
 
 	// initialize processors
@@ -22,13 +13,17 @@ func circular(que []*Job) int {
 	for i := 0; i < len(que); i++ {
 		j = (j + 1) % k // determine the processor to use
 
-		// as long as the processors already have processes in them,
-		//   complete the current process
+		// as long as the processor already has a real job, complete it
 		if !proc[j].Job.IsFiller() {
-			proc[j].Elapse(proc[j].Job.tproc)
+			proc[j].Process()
 		}
 		proc[j].LoadProcess(que[i])
 	}
 
 	return maxTimeElapsed()
+}
+
+// Name implements SchedulingProcedure.Name
+func (rr *RoundRobin) Name() string {
+	return "Round Robin"
 }

@@ -9,6 +9,7 @@ var k = 5244%3 + 2    // 2
 var proc []*Processor // the processors
 var ltime = 1         // time it take s to load a process is 1ms
 
+// SchedulingProcedure defines the blueprint that all scheduling procedures must follow
 type SchedulingProcedure interface {
 	Schedule(que []*Job) int
 	Name() string
@@ -18,8 +19,7 @@ type SchedulingProcedure interface {
 func initProc() {
 	proc = make([]*Processor, k)
 	for i := 0; i < len(proc); i++ {
-		proc[i] = &Processor{}
-		proc[i].Reset()
+		proc[i] = CreateProcessor()
 	}
 }
 
