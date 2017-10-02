@@ -6,11 +6,11 @@ import (
 	"math/rand"
 )
 
-func genJobs() (randJobs [][2]int) {
+func genJobs() (randJobs []*Job) {
 	for i := 0; i < 1000; i++ {
-		tarr := rand.Intn(500) + 1
+		tarr := i
 		tproc := rand.Intn(500) + 1
-		randJobs = append(randJobs, [2]int{tarr, tproc})
+		randJobs = append(randJobs, &Job{tarr, tproc})
 	}
 	return
 }
@@ -24,7 +24,7 @@ func sd(in [1000]int, mean int) float64 {
 	return math.Sqrt(float64(v))
 }
 
-func sim(sf *schedulingProcedure) {
+func sim(sf SchedulingProcedure) {
 	res := [1000]int{}
 
 	tot := 0
@@ -32,8 +32,7 @@ func sim(sf *schedulingProcedure) {
 	min := math.MaxInt16
 
 	for i := 0; i < 1000; i++ {
-		fmt.Println(i)
-		res[i] = sf.fn(genJobs())
+		res[i] = sf.Schedule(genJobs())
 
 		tot += res[i]
 		if res[i] > max {
@@ -44,5 +43,5 @@ func sim(sf *schedulingProcedure) {
 		}
 	}
 
-	fmt.Println(sf.name, " achieved the following on 1000 simulations:\n\tavg:", tot/1000, "\n\tsd:", sd(res, tot/1000), "\ntmin:", min, "\n\tmax:", max)
+	fmt.Println(sf.Name(), "achieved the following statistics on 1000 simulations (all in ms):\n\tavg:", tot/1000, "\n\tsd:", sd(res, tot/1000), "\n\tmin:", min, "\n\tmax:", max)
 }
