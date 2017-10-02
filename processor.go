@@ -18,6 +18,14 @@ func (p *Processor) Process() {
 	p.tproc += p.Job.tproc
 }
 
+// Wait simulates time in between finishing one job and the arrival of the next
+func (p *Processor) Wait(t int) {
+	if t < 0 {
+		t = 0
+	}
+	p.tproc += t
+}
+
 // LoadProcess loads a new job into the processor (taking load time into account)
 func (p *Processor) LoadProcess(pr *Job) {
 	p.Job = pr

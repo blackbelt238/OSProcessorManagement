@@ -16,11 +16,12 @@ func (rr *RoundRobin) Schedule(que []*Job) int {
 		// as long as the processor already has a real job, complete it
 		if !proc[j].Job.IsFiller() {
 			proc[j].Process()
+			proc[j].Wait(que[i].tarr - proc[j].Job.tarr - proc[j].Job.tproc)
 		}
 		proc[j].LoadProcess(que[i])
 	}
 
-	return maxTimeElapsed()
+	return maxTimeElapsed() + que[0].tarr
 }
 
 // Name implements SchedulingProcedure.Name
