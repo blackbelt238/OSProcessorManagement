@@ -1,0 +1,7 @@
+Round Robin achieved the following statistics on 1000 simulations (all in ms):
+        avg: 127386
+        sd: 126950.31941275296
+        min: 32767
+        max: 137085
+        
+Round Robin completed the b2 sequence in 570 ms

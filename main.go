@@ -15,6 +15,11 @@ type SchedulingProcedure interface {
 	Name() string
 }
 
+type schedulingProcedure struct {
+	fn   func(que [][2]int) int
+	name string
+}
+
 // initProc initializes the slice representing the processors
 func initProc() {
 	proc = make([]*Processor, k)
@@ -37,10 +42,11 @@ func maxTimeElapsed() int {
 // processscheduler simulates a multi-core, non-preemptive process scheduler
 func main() {
 	rr := &RoundRobin{}
-	e1 := []*Job{&Job{0, 3}, &Job{1, 2}, &Job{2, 1}}
-	fmt.Println(rr.Schedule(e1))
+	sim(rr)
 
-	//sim(roundrobin)
-	// b1 := genJobSeq()
-	// b2 := // TODO: hardcode in the b2 dataset
+	b2 := []*Job{&Job{4, 9}, &Job{15, 2}, &Job{18, 16},
+		&Job{20, 3}, &Job{26, 29}, &Job{29, 198},
+		&Job{35, 7}, &Job{45, 170}, &Job{57, 180},
+		&Job{83, 178}, &Job{88, 73}, &Job{95, 8}}
+	fmt.Println(rr.Name(), "completed the b2 sequence in", rr.Schedule(b2), "ms")
 }
