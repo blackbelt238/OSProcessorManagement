@@ -4,7 +4,7 @@ package main
 type RoundRobin struct{}
 
 // implements SchedulingProcedure.Schedule
-func (rr *RoundRobin) Schedule(que [][2]int) int {
+func (rr *RoundRobin) Schedule(que []*Job) int {
 	return circular(que)
 }
 
@@ -13,13 +13,8 @@ func (rr *RoundRobin) Name() string {
 	return "Round Robin"
 }
 
-func circular(que [][2]int) int {
+func circular(que []*Job) int {
 	j := 0
-
-	// loads a process into a processor
-	loadProcess := func(loadfrom int) {
-		proc[j].Job = que[loadfrom]
-	}
 
 	// initialize processors
 	initProc()
@@ -27,11 +22,13 @@ func circular(que [][2]int) int {
 	for i := 0; i < len(que); i++ {
 		j = (j + 1) % k // determine the processor to use
 
-		// as long as the processors already have processes in them
-		if k < i {
-
+		// as long as the processors already have processes in them,
+		//   complete the current process
+		if !proc[j].Job.IsFiller() {
+			proc[j].Elapse(proc[j].Job.tproc)
 		}
+		proc[j].LoadProcess(que[i])
 	}
 
-	return 0
+	return maxTimeElapsed()
 }

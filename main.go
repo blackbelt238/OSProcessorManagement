@@ -17,9 +17,9 @@ type SchedulingProcedure interface {
 // initProc initializes the slice representing the processors
 func initProc() {
 	proc = make([]*Processor, k)
-	for _, p := range proc {
-		p = &Processor{}
-		p.Reset()
+	for i := 0; i < len(proc); i++ {
+		proc[i] = &Processor{}
+		proc[i].Reset()
 	}
 }
 
