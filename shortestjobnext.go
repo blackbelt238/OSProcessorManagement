@@ -11,18 +11,9 @@ func (sjn *ShortestJobNext) Schedule(que []*Job) int {
 
 	// loop until there are no processes left in que
 	for len(que) > 0 {
-		var jshori int // the index of the shortest job
-		var jshor *Job
+		jshor, jshori := findShortest(que)
 
 		j = (j + 1) % k // determine the processor to use
-
-		// find the shortest job in the queue
-		for i := 0; i < len(que); i++ {
-			if jshor == nil || que[i].tproc < jshor.tproc {
-				jshor = que[i]
-				jshori = i
-			}
-		}
 
 		// remove the job from the queue
 		copy(que[jshori:], que[jshori+1:])
@@ -42,4 +33,21 @@ func (sjn *ShortestJobNext) Schedule(que []*Job) int {
 // Name implements SchedulingProcedure.Name
 func (sjn *ShortestJobNext) Name() string {
 	return "Shortest Job Next"
+}
+
+// findShortest returns the job with the shortest execution time
+//   in the queue along with its' index in the queue
+func findShortest(que []*Job) (*Job, int) {
+	var jshor *Job
+	jshori := -1
+
+	// find the shortest job in the queue
+	for i := 0; i < len(que); i++ {
+		if jshor == nil || que[i].tproc < jshor.tproc {
+			jshor = que[i]
+			jshori = i
+		}
+	}
+
+	return jshor, jshori
 }
