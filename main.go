@@ -5,31 +5,40 @@ import (
 )
 
 // k represents the number of cores the processor has
-var k = 5244%3 + 2   // 2
-var proc []Processor // the processors
-var ltime = 1        // time it take s to load a process is 1ms
+var k = 5244%3 + 2    // 2
+var proc []*Processor // the processors
+var ltime = 1         // time it take s to load a process is 1ms
 
 type SchedulingProcedure interface {
-	Schedule(que [][2]int) int
+	Schedule(que []*Job) int
 	Name() string
 }
 
 // initProc initializes the slice representing the processors
 func initProc() {
-	proc = make([]Processor, k)
+	proc = make([]*Processor, k)
+	for _, p := range proc {
+		p = &Processor{}
+		p.Reset()
+	}
 }
 
 // takes in 2 numbers and returns the maximum
-func max(a, b int) int {
-	if a < b {
-		return b
+func maxTimeElapsed() int {
+	max := 0
+	for i := 0; i < len(proc); i++ {
+		if max < proc[i].tproc {
+			max = proc[i].tproc
+		}
 	}
-	return a
+	return max
 }
 
 // processscheduler simulates a multi-core, non-preemptive process scheduler
 func main() {
-	//e1 := [][2]int{{0, 3}, {1, 2}, {2, 1}}
+	rr := &RoundRobin{}
+	e1 := []*Job{&Job{0, 3}, &Job{1, 2}, &Job{2, 1}}
+	fmt.Println(rr.Schedule(e1))
 
 	//sim(roundrobin)
 	// b1 := genJobSeq()
