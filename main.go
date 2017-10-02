@@ -42,11 +42,14 @@ func maxTimeElapsed() int {
 // processscheduler simulates a multi-core, non-preemptive process scheduler
 func main() {
 	rr := &RoundRobin{}
+	sjn := &ShortestJobNext{}
 	sim(rr)
+	sim(sjn)
 
 	b2 := []*Job{&Job{4, 9}, &Job{15, 2}, &Job{18, 16},
 		&Job{20, 3}, &Job{26, 29}, &Job{29, 198},
 		&Job{35, 7}, &Job{45, 170}, &Job{57, 180},
 		&Job{83, 178}, &Job{88, 73}, &Job{95, 8}}
 	fmt.Println(rr.Name(), "completed the b2 sequence in", rr.Schedule(b2), "ms")
+	fmt.Println(sjn.Name(), "completed the b2 sequence in", sjn.Schedule(b2), "ms")
 }
